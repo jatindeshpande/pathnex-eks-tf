@@ -2,7 +2,7 @@ resource "aws_eks_node_group" "pathnex-NG" {
   cluster_name    = aws_eks_cluster.pathnex.name
   node_group_name = "pathnex-ng"
 
-  node_role_arn = "arn:aws:iam::861142265676:role/AmazonEKSClusterRole-Pathnex"
+  node_role_arn = aws_iam_role.eks_node.arn
 
   subnet_ids = [
     "subnet-0f201fd5ad1b2a6da",
@@ -47,4 +47,37 @@ resource "aws_eks_node_group" "pathnex-NG" {
       "sg-0eb804e9e40aca084"
     ]
   }
+}
+
+resource "aws_iam_role" "eks_node" {
+  name = "pathnex-eks-node-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+
+    Statement = [{
+      Effect = "Allow"
+
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      }
+
+      Action = "sts:AssumeRole"
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "eks_node_worker" {
+  role       = aws_iam_role.eks_node.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "eks_node_ecr" {
+  role       = aws_iam_role.eks_node.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPullOnly"
+}
+
+resource "aws_iam_role_policy_attachment" "eks_node_cni" {
+  role       = aws_iam_role.eks_node.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
 }

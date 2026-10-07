@@ -30,7 +30,7 @@ provider "helm" {
         "--cluster-name",
         aws_eks_cluster.pathnex.name,
         "--region",
-        "ap-south-1"
+        var.aws_region
       ]
     }
   }

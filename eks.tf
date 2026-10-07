@@ -1,5 +1,5 @@
 resource "aws_eks_cluster" "pathnex" {
-  name     = "Pathnex-Sep-2026"
+  name     = var.cluster_name
   role_arn = "arn:aws:iam::861142265676:role/AmazonEKSClusterRole-Pathnex"
   version  = "1.35"
 

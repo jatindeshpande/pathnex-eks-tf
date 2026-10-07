@@ -11,7 +11,7 @@ resource "helm_release" "cluster_autoscaler" {
         clusterName = aws_eks_cluster.pathnex.name
       }
 
-      awsRegion     = "ap-south-1"
+      awsRegion     = "us-east-2"
       cloudProvider = "aws"
 
       rbac = {
