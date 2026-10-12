@@ -7,6 +7,10 @@ resource "aws_eks_cluster" "pathnex" {
     support_type = "STANDARD"
   }
 
+  access_config {
+    authentication_mode = "API_AND_CONFIG_MAP"
+  }
+
   vpc_config {
     subnet_ids = [
       "subnet-0f201fd5ad1b2a6da",
@@ -28,4 +32,21 @@ resource "aws_eks_cluster" "pathnex" {
   zonal_shift_config {
          enabled = false
         }
+}
+
+resource "aws_eks_access_entry" "devops" {
+  cluster_name  = aws_eks_cluster.pathnex.name
+  principal_arn = "arn:aws:iam::861142265676:role/AWS-DevOps-Role"
+  type          = "STANDARD"
+}
+
+resource "aws_eks_access_policy_association" "devops_admin" {
+  cluster_name  = aws_eks_cluster.pathnex.name
+  principal_arn = aws_eks_access_entry.devops.principal_arn
+
+  policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+
+  access_scope {
+    type = "cluster"
+  }
 }

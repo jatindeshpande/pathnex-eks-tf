@@ -17,9 +17,9 @@ resource "aws_eks_node_group" "pathnex-NG" {
   disk_size      = 20
 
   scaling_config {
-    desired_size = 1
+    desired_size = 2
     min_size     = 1
-    max_size     = 2
+    max_size     = 3
   }
 
   tags = {
@@ -41,7 +41,7 @@ resource "aws_eks_node_group" "pathnex-NG" {
   }
 
   remote_access {
-    ec2_ssh_key = "Devops-KeyPair.pem"
+    ec2_ssh_key = "Devops-KeyPair"
 
     source_security_group_ids = [
       "sg-0eb804e9e40aca084"

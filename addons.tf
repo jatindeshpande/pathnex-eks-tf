@@ -50,7 +50,7 @@ resource "aws_eks_addon" "kube_proxy" {
 resource "aws_eks_addon" "metrics_server" {
   cluster_name = aws_eks_cluster.pathnex.name
   addon_name   = "metrics-server"
-  addon_version = "v0.9.0-eksbuild.5"
+  addon_version = "v0.9.0-eksbuild.11"
   depends_on = [aws_eks_cluster.pathnex]
 }
 
