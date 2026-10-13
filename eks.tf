@@ -50,3 +50,16 @@ resource "aws_eks_access_policy_association" "devops_admin" {
     type = "cluster"
   }
 }
+
+resource "aws_ecr_repository" "app_repo" {
+  name = "pathnex-ecr"
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+  force_delete = true
+}
+
+output "ecr_repository_url" {
+  description = "ECR repository URL for the application"
+  value       = aws_ecr_repository.app_repo.repository_url
+}
